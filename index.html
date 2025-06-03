@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AQI Assistant Chatbot</title>
     <style>
-        /* ... (All your previous CSS, unchanged) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -107,7 +106,6 @@
         <!-- Sound element (hidden) -->
         <audio id="highAqiSound" preload="auto">
             <source src="beep-beep-beep-beep-80262.mp3" type="audio/mpeg">
-            <!-- Fallback beep (if the above fails, you can use any small mp3 url) -->
         </audio>
         <div class="alert-banner" id="alertBanner">
             ⚠️ High pollution alert! Take necessary precautions.
@@ -165,7 +163,7 @@
         </div>
     </div>
     <script>
-        // Expanded FAQ knowledge base!
+        // FAQ Knowledge Base
         const faqKnowledgeBase = {
             "what is aqi": "AQI stands for <b>Air Quality Index</b>. It's a number used by government agencies to communicate how polluted the air currently is or how polluted it is forecast to become. The higher the AQI, the greater the health concern.",
             "how is aqi calculated": "AQI is calculated using measurements of key air pollutants: <b>PM2.5</b>, <b>PM10</b>, <b>Ozone (O3)</b>, <b>Nitrogen Dioxide (NO2)</b>, <b>Sulfur Dioxide (SO2)</b>, and <b>Carbon Monoxide (CO)</b>. Each pollutant's concentration is converted to a number on the AQI scale and the highest is reported as the AQI.",
@@ -184,7 +182,6 @@
             "what is ozone": "Ozone (O3) is a gas found both at ground level and in the upper atmosphere. At ground level, ozone is a harmful air pollutant and a main component of urban smog. It can cause respiratory irritation and worsen asthma.",
             "what is carbon monoxide": "Carbon monoxide (CO) is a colorless, odorless gas that is harmful when inhaled. It comes from burning fossil fuels. High exposure can be fatal.",
             "what is nitrogen dioxide": "Nitrogen dioxide (NO2) is a reddish-brown gas with a sharp odor, produced mainly from vehicle exhaust and industry. It irritates the lungs and lowers immunity to lung infections."
-            // Add/remove more as you wish!
         };
 
         function checkFAQIntent(text) {
@@ -292,7 +289,6 @@
             }
         };
 
-        // Sound alert when AQI > 150
         function playHighAQISound() {
             const audio = document.getElementById('highAqiSound');
             if (audio) {
@@ -511,11 +507,31 @@
             const location = document.getElementById('locationInput').value;
             if (location) {
                 currentLocation = location;
-                addMessage(`Location updated to: ${location}. I'll provide recommendations based on this location's air quality data.`);
+                addMessage(`Location updated to: ${location}. Fetching AQI data...`);
+                fetchAQI(location);
             }
         }
 
-        // document.getElementById('chatInput').focus(); // (Enable if you want autofocus)
+        function fetchAQI(location) {
+            const token = 'b2729108a27e4af10cbf924c0ff6abc756beb8d4'; // <-- Replace this with your actual WAQI API token
+            const url = `https://api.waqi.info/feed/${encodeURIComponent(location)}/?token=${token}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok' && data.data && data.data.aqi) {
+                        const aqi = data.data.aqi;
+                        updateAQI(aqi, location);
+                    } else {
+                        addMessage("❗ Could not fetch AQI data for this location. Please check the city name or try later.");
+                    }
+                })
+                .catch(err => {
+                    addMessage("❗ Error fetching AQI data. Please try again later.");
+                });
+        }
+
+        document.getElementById('chatInput').focus();
     </script>
 </body>
 </html>
