@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AQI Prediction System</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS Animate On Scroll -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+  <style>
+    /* Snap scrolling for smooth section transitions */
+    html {
+      scroll-snap-type: y mandatory;
+    }
+    
+    section {
+      scroll-snap-align: start;
+    }
+
+    /* Light mode section backgrounds with good contrast */
+    section:nth-of-type(odd) {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: #1e293b;
+    }
+    section:nth-of-type(even) {
+      background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+      color: #1e293b;
+    }
+
+    /* Dark mode section backgrounds */
+    .dark section:nth-of-type(odd) {
+      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+      color: #f1f5f9;
+    }
+    .dark section:nth-of-type(even) {
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      color: #f1f5f9;
+    }
+
+    /* Ensure text is always visible */
+    .section-text {
+      color: #1e293b !important;
+    }
+    
+    .dark .section-text {
+      color: #f1f5f9 !important;
+    }
+
+    /* Header text styling */
+    .hero-title {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .dark .hero-title {
+      background: linear-gradient(135deg, #60a5fa, #a78bfa, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+
+<body class="font-sans bg-white text-gray-900 dark:bg-black dark:text-gray-100 transition-colors duration-300">
+
+  <!-- Navbar - Made smaller -->
+  <header class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-lg z-50 transition duration-300">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+      <div class="text-lg font-bold text-gray-900 dark:text-white">AQI System</div>
+      <nav class="space-x-4 hidden md:block">
+        <a href="#home" class="text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Home</a>
+        <a href="#monitor" class="text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Live Data</a>
+        <a href="#forecast" class="text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">LSTM Forecast</a>
+        <a href="#health" class="text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">AI Chatbot</a>
+        <a href="#statistics" class="text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Statistics</a>
+        <a href="#launch" class="text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Launch App</a>
+      </nav>
+      <button id="toggleDark" class="ml-4 p-1.5 rounded-md bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition">
+        <span class="dark:hidden text-sm">🌙</span>
+        <span class="hidden dark:inline text-sm">☀️</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="pt-16">
+    <!-- Hero -->
+    <section id="home" class="min-h-screen flex flex-col justify-center items-center text-center px-6">
+      <h1 class="hero-title text-4xl md:text-6xl font-bold mb-4" data-aos="fade-down">AI-Powered AQI Prediction System</h1>
+      <p class="section-text text-lg md:text-xl max-w-2xl mb-8" data-aos="fade-up">Advanced LSTM deep learning models predict air quality trends, while our AI chatbot provides personalized health recommendations based on real-time data.</p>
+      <div class="section-text animate-bounce" data-aos="fade-up" data-aos-delay="500">
+        <p class="text-sm opacity-70">Scroll down to explore</p>
+        <div class="text-2xl">↓</div>
+      </div>
+    </section>
+
+    <!-- Section 1 -->
+    <section id="monitor" class="min-h-screen flex flex-col md:flex-row items-center justify-between px-6 py-12">
+      <div class="md:w-1/2" data-aos="fade-right">
+        <h2 class="section-text text-3xl font-semibold mb-4">📡 Real-time AQI Monitoring</h2>
+        <p class="section-text text-lg leading-relaxed mb-4">Comprehensive air quality monitoring using live data from government sensors and satellite imagery. Track PM2.5, PM10, NO2, SO2, CO, and O3 levels with minute-by-minute updates.</p>
+        <div class="section-text">
+          <div class="flex items-center mb-2">
+            <span class="w-3 h-3 bg-green-500 rounded-full mr-3"></span>
+            <span class="text-sm">Real-time sensor data integration</span>
+          </div>
+          <div class="flex items-center mb-2">
+            <span class="w-3 h-3 bg-blue-500 rounded-full mr-3"></span>
+            <span class="text-sm">Multi-pollutant tracking</span>
+          </div>
+          <div class="flex items-center">
+            <span class="w-3 h-3 bg-purple-500 rounded-full mr-3"></span>
+            <span class="text-sm">Location-based monitoring</span>
+          </div>
+        </div>
+      </div>
+      <div class="md:w-1/2 mt-6 md:mt-0" data-aos="fade-left">
+        <div class="w-full max-w-md mx-auto bg-white/20 dark:bg-gray-800/20 rounded-lg p-8 backdrop-blur-sm">
+          <div class="section-text text-center">
+            <div class="text-6xl mb-4">📊</div>
+            <h3 class="text-xl font-semibold mb-2">Live AQI Dashboard</h3>
+            <p class="text-sm opacity-80">Real-time monitoring interface</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section id="forecast" class="min-h-screen flex flex-col md:flex-row-reverse items-center justify-between px-6 py-12">
+      <div class="md:w-1/2" data-aos="fade-left">
+        <h2 class="section-text text-3xl font-semibold mb-4">🧠 LSTM Deep Learning Forecasting</h2>
+        <p class="section-text text-lg leading-relaxed mb-4">Our Long Short-Term Memory (LSTM) neural networks analyze historical patterns, weather correlations, and seasonal trends to predict AQI values up to 7 days ahead with 85%+ accuracy.</p>
+        <div class="section-text">
+          <div class="flex items-center mb-2">
+            <span class="w-3 h-3 bg-red-500 rounded-full mr-3"></span>
+            <span class="text-sm">LSTM neural network architecture</span>
+          </div>
+          <div class="flex items-center mb-2">
+            <span class="w-3 h-3 bg-yellow-500 rounded-full mr-3"></span>
+            <span class="text-sm">Weather pattern integration</span>
+          </div>
+          <div class="flex items-center">
+            <span class="w-3 h-3 bg-indigo-500 rounded-full mr-3"></span>
+            <span class="text-sm">7-day forecast horizon</span>
+          </div>
+        </div>
+      </div>
+      <div class="md:w-1/2 mt-6 md:mt-0" data-aos="fade-right">
+        <div class="w-full max-w-md mx-auto bg-white/20 dark:bg-gray-800/20 rounded-lg p-8 backdrop-blur-sm">
+          <div class="section-text text-center">
+            <div class="text-6xl mb-4">🧠</div>
+            <h3 class="text-xl font-semibold mb-2">LSTM Neural Network</h3>
+            <p class="text-sm opacity-80">Deep learning predictions</p>
+            <div class="mt-4 text-xs opacity-70">
+              <div>Training Data: 5+ years</div>
+              <div>Accuracy: 85%+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section id="health" class="min-h-screen flex flex-col md:flex-row items-center justify-between px-6 py-12">
+      <div class="md:w-1/2" data-aos="fade-right">
+        <h2 class="section-text text-3xl font-semibold mb-4">🤖 AI Health Assistant</h2>
+        <p class="section-text text-lg leading-relaxed mb-4">Our OpenAI-powered chatbot provides personalized health recommendations based on current AQI levels, your medical history, age, and lifestyle. Get instant answers to air quality concerns 24/7.</p>
+        <div class="section-text">
+          <div class="flex items-center mb-2">
+            <span class="w-3 h-3 bg-green-500 rounded-full mr-3"></span>
+            <span class="text-sm">OpenAI GPT integration</span>
+          </div>
+          <div class="flex items-center mb-2">
+            <span class="w-3 h-3 bg-blue-500 rounded-full mr-3"></span>
+            <span class="text-sm">Personalized health advice</span>
+          </div>
+          <div class="flex items-center">
+            <span class="w-3 h-3 bg-purple-500 rounded-full mr-3"></span>
+            <span class="text-sm">24/7 instant responses</span>
+          </div>
+        </div>
+      </div>
+      <div class="md:w-1/2 mt-6 md:mt-0" data-aos="fade-left">
+        <div class="w-full max-w-md mx-auto bg-white/20 dark:bg-gray-800/20 rounded-lg p-8 backdrop-blur-sm">
+          <div class="section-text text-center">
+            <div class="text-6xl mb-4">🤖</div>
+            <h3 class="text-xl font-semibold mb-2">AI Health Chatbot</h3>
+            <p class="text-sm opacity-80">Powered by OpenAI</p>
+            <div class="mt-4 text-xs opacity-70">
+              <div>Smart Q&A System</div>
+              <div>Instant Health Advice</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics Section - Made Smaller -->
+    <section id="statistics" class="flex flex-col justify-center items-center px-6 py-16 min-h-[80vh]">
+      <div class="max-w-5xl mx-auto text-center">
+        <h2 class="section-text text-3xl font-bold mb-4" data-aos="fade-up">AQI & Health Impact Statistics</h2>
+        <p class="section-text text-base mb-8 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">Understanding the critical relationship between air quality and public health through data-driven insights.</p>
+        
+        <!-- Statistics Grid - Reduced size -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <!-- Stat 1 -->
+          <div class="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-lg p-4" data-aos="zoom-in" data-aos-delay="100">
+            <div class="section-text">
+              <div class="text-2xl font-bold text-red-500 mb-1">7M</div>
+              <h3 class="text-sm font-semibold mb-1">Annual Deaths</h3>
+              <p class="text-xs opacity-80">Global deaths from air pollution</p>
+            </div>
+          </div>
+          
+          <!-- Stat 2 -->
+          <div class="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-lg p-4" data-aos="zoom-in" data-aos-delay="200">
+            <div class="section-text">
+              <div class="text-2xl font-bold text-orange-500 mb-1">91%</div>
+              <h3 class="text-sm font-semibold mb-1">Population Exposed</h3>
+              <p class="text-xs opacity-80">People breathing unsafe air</p>
+            </div>
+          </div>
+          
+          <!-- Stat 3 -->
+          <div class="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-lg p-4" data-aos="zoom-in" data-aos-delay="300">
+            <div class="section-text">
+              <div class="text-2xl font-bold text-yellow-500 mb-1">50+</div>
+              <h3 class="text-sm font-semibold mb-1">Unhealthy Cities</h3>
+              <p class="text-xs opacity-80">Indian cities with AQI >100</p>
+            </div>
+          </div>
+          
+          <!-- Stat 4 -->
+          <div class="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-lg p-4" data-aos="zoom-in" data-aos-delay="400">
+            <div class="section-text">
+              <div class="text-2xl font-bold text-blue-500 mb-1">$5T</div>
+              <h3 class="text-sm font-semibold mb-1">Economic Cost</h3>
+              <p class="text-xs opacity-80">Annual global impact</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Health Impact Categories - Condensed -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <!-- Respiratory -->
+          <div class="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-lg p-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="section-text text-center">
+              <div class="text-2xl mb-2">🫁</div>
+              <h3 class="text-lg font-semibold mb-2">Respiratory</h3>
+              <div class="space-y-1 text-xs">
+                <div class="flex justify-between">
+                  <span>Asthma:</span>
+                  <span class="font-semibold text-red-500">+40%</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>COPD:</span>
+                  <span class="font-semibold text-orange-500">15M+</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Cancer risk:</span>
+                  <span class="font-semibold text-red-600">+20%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Cardiovascular -->
+          <div class="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-lg p-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="section-text text-center">
+              <div class="text-2xl mb-2">❤️</div>
+              <h3 class="text-lg font-semibold mb-2">Cardiovascular</h3>
+              <div class="space-y-1 text-xs">
+                <div class="flex justify-between">
+                  <span>Heart attacks:</span>
+                  <span class="font-semibold text-red-500">+30%</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Stroke risk:</span>
+                  <span class="font-semibold text-orange-500">+25%</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Blood pressure:</span>
+                  <span class="font-semibold text-yellow-500">Elevated</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Children -->
+          <div class="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-lg p-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="section-text text-center">
+              <div class="text-2xl mb-2">👶</div>
+              <h3 class="text-lg font-semibold mb-2">Children</h3>
+              <div class="space-y-1 text-xs">
+                <div class="flex justify-between">
+                  <span>Stunted growth:</span>
+                  <span class="font-semibold text-red-500">600K+</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Premature births:</span>
+                  <span class="font-semibold text-orange-500">+18%</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>IQ reduction:</span>
+                  <span class="font-semibold text-yellow-500">2-5 points</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AQI Scale Reference - Compact -->
+        <div class="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-lg p-4" data-aos="fade-up" data-aos-delay="400">
+          <h3 class="section-text text-lg font-semibold mb-3">AQI Health Categories</h3>
+          <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
+            <div class="text-center p-2 rounded-lg bg-green-500/20">
+              <div class="section-text font-bold text-green-600 dark:text-green-400 text-sm">0-50</div>
+              <div class="section-text text-xs mt-1">Good</div>
+            </div>
+            <div class="text-center p-2 rounded-lg bg-yellow-500/20">
+              <div class="section-text font-bold text-yellow-600 dark:text-yellow-400 text-sm">51-100</div>
+              <div class="section-text text-xs mt-1">Moderate</div>
+            </div>
+            <div class="text-center p-2 rounded-lg bg-orange-500/20">
+              <div class="section-text font-bold text-orange-600 dark:text-orange-400 text-sm">101-150</div>
+              <div class="section-text text-xs mt-1">Unhealthy*</div>
+            </div>
+            <div class="text-center p-2 rounded-lg bg-red-500/20">
+              <div class="section-text font-bold text-red-600 dark:text-red-400 text-sm">151-200</div>
+              <div class="section-text text-xs mt-1">Unhealthy</div>
+            </div>
+            <div class="text-center p-2 rounded-lg bg-purple-500/20">
+              <div class="section-text font-bold text-purple-600 dark:text-purple-400 text-sm">201-300</div>
+              <div class="section-text text-xs mt-1">Very Bad</div>
+            </div>
+            <div class="text-center p-2 rounded-lg bg-red-800/20">
+              <div class="section-text font-bold text-red-800 dark:text-red-300 text-sm">301+</div>
+              <div class="section-text text-xs mt-1">Hazardous</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="launch" class="min-h-screen flex flex-col justify-center items-center text-center px-6">
+      <h2 class="section-text text-4xl font-bold mb-6" data-aos="zoom-in">Experience AI-Powered Air Quality</h2>
+      <p class="section-text text-lg mb-8" data-aos="zoom-in">Launch our comprehensive system featuring LSTM predictions and intelligent health assistance.</p>
+      <a href="https://aqi-prediction-and-health-advisory-system.streamlit.app/" target="_blank" class="bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-xl text-lg hover:from-green-700 hover:to-blue-700 transform hover:scale-105 transition duration-300 shadow-lg" data-aos="fade-up">
+        🚀 Launch AQI Prediction App
+      </a>
+      <div class="section-text mt-8 opacity-70" data-aos="fade-up" data-aos-delay="300">
+        <p class="text-sm">LSTM Neural Networks • OpenAI Integration • Real-time Data • Free Access</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+  </script>
+
+  <!-- Dark Mode Toggle Script -->
+  <script>
+    const toggleDark = document.getElementById("toggleDark");
+    const html = document.documentElement;
+
+    // Set theme from localStorage
+    if (localStorage.getItem("theme") === "dark") {
+      html.classList.add("dark");
+    }
+
+    toggleDark.addEventListener("click", () => {
+      html.classList.toggle("dark");
+      const theme = html.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("theme", theme);
+    });
+  </script>
+
+  <!-- Smooth Scroll Enhancement -->
+  <script>
+    // Enhanced smooth scrolling between sections
+    let isScrolling = false;
+    let scrollTimeout;
+    
+    window.addEventListener('wheel', (e) => {
+      if (isScrolling) return;
+      
+      const sections = document.querySelectorAll('section');
+      const currentSection = getCurrentSection();
+      
+      if (e.deltaY > 0 && currentSection < sections.length - 1) {
+        // Scrolling down
+        isScrolling = true;
+        sections[currentSection + 1].scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { isScrolling = false; }, 1000);
+      } else if (e.deltaY < 0 && currentSection > 0) {
+        // Scrolling up
+        isScrolling = true;
+        sections[currentSection - 1].scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { isScrolling = false; }, 1000);
+      }
+    });
+    
+    function getCurrentSection() {
+      const sections = document.querySelectorAll('section');
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+      
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+          return i;
+        }
+      }
+      return 0;
+    }
+  </script>
+</body>
+</html>
